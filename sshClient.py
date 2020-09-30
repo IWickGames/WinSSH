@@ -14,7 +14,7 @@ def sshClient():
     except: #Check if a connection to the server cant be esablished
         print("Failed to connect to: " + str(loginAddress))
         sys.exit()
-    
+
     print(f"Connected to {loginAddress}") #Connection successfull!
 
     sessionToken = None #Set sessionToken to nothing
@@ -29,16 +29,16 @@ def sshClient():
             sessionToken = rep
         else:
             print("Login failed, try again")
-        
+
     while True: #Start client interface, now the session token must be sent with the message for it to be executed
         try:
             command = input("$ ")
         except KeyboardInterrupt:
             break
-        
+
         if command == "close":
             break
-        
+
         try:
             responce = serverProc.TCPClient(loginAddress, 37, f"EXECUTE_SHELL:{sessionToken}:{command}")
             print(responce)
@@ -46,4 +46,3 @@ def sshClient():
             print("Lost connection with SSH server")
         except:
             print("Lost connection with SSH server")
-

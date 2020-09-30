@@ -23,7 +23,7 @@ def sshServer():
         if command.startswith("GET_SESSION"): #Check if the user is generating a token
             with open("creds.winssh") as f: #Grab login hash from the file
                 validSSHTOKEN = f.read()
-            
+
             if command.split(":", 1)[1] == validSSHTOKEN: #Validate the hash
                 genSessionToken = genSessionToken() #Login was successfull, generate valid session token and store it
                 activeSessions.append(genSessionToken) #Save session token to list
@@ -33,7 +33,7 @@ def sshServer():
 
         if command.startswith("GET_DEVICE_NAME"): #Get Device info return
             return f"{hostname}" #Return device name
-        
+
         if command.startswith("EXECUTE_SHELL"): #Execute command as shell
             if len(command.split(":", 2)) != 3: #Make sure arguments are valid
                 return "ERROR" #If invalid return error
@@ -43,31 +43,31 @@ def sshServer():
 
             if not session in activeSessions:
                 return "ERROR"
-            
+
             try:
                 commandOutput = subprocess.check_output(rawCommand, shell=True).decode("utf-8")
             except:
                 commandOutput = "Command failed to execute"
-            
+
             return commandOutput
-        
+
         if command.startswith("CLOSE_SESSION"):
             token = command.split(":", 1)[1]
 
             if not token in activeSessions:
                 return "ERROR"
-            
+
             try:
                 activeSessions.remove(token)
             except:
                 pass
             return "TRUE"
-            
-
-            
 
 
-        
+
+
+
+
     while True: #Start connection loop
         try:
             connectionSave, connectionAddress, command = serverProc.TCPServerRecieve(localIpAddr, 37) #Wait for a WinSSH client to connect
@@ -77,7 +77,7 @@ def sshServer():
                     f.write(f"{connectionAddress} | POST_RAW_CMD: {command}" + "\n")
             except:
                 pass
-            
+
             try:
                 commandOutput = commandHandler(command)
             except:

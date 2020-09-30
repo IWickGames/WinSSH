@@ -27,5 +27,5 @@ if arguments[1] == "-passwd":
 
     with open("creds.winssh", "w") as f:
         f.write(loginHash)
-    
+
     sys.exit()
